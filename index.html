@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>mock-up</title>
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <script src="js/jquery.min.js"></script>
+    
+</head>
+
+
+<body>
+
+       
+<div id="main">   
+    <section><h2 id="text-01" data-interval="40" data-animate-class="sakuraDrop" class="separate-span">いろはにほへと　ちりぬるを<br>わかよたれそ　つねならむ<br>うゐのおくやま　けふこえて<br>あさきゆめみし　ゑひもせすん</h2></section>
+</div>
+
+<script type="text/javascript">
+    
+    
+    var targetClass     = ".separate-span";
+    var target          = $(targetClass);
+    
+    //spanに分割する
+    target.children().andSelf().contents().each(function() {                
+        if (this.nodeType == 3) {
+            $(this).replaceWith($(this).text().replace(/(\S)/g, "<span>$&</span>"));
+        }
+    });
+    // 動きの演出をつける
+    target.each(function() {
+    
+        var addClassName    = $(this).data('animate-class');
+        var delayInterval   = $(this).data('interval');
+        
+        var delayIntervalArr = [];
+        $(this).children('span').each(function(i){
+            i = i+1;
+            delayIntervalArr.push(delayInterval*i +'ms')
+        })
+
+        
+        // シャッフル
+        delayIntervalArr = shuffle(delayIntervalArr)
+        // リバース
+        // delayIntervalArr = delayIntervalArr.reverse();
+        
+        // classを追加
+        $(this).children('span').addClass(addClassName);
+        // delayを追加
+        $(this).children('span').each(function(i) {
+            
+            $(this).css('animation-delay',delayIntervalArr[i]);
+        });
+    }); 
+    
+    
+    function shuffle(arr) {
+    
+        for(var i=0;i<arr.length;i++){
+
+            var index = Math.floor(arr.length * Math.random());
+            var ele = arr[i];
+            arr[i]=arr[index];
+            arr[index]=ele;
+
+        }
+      
+       
+      return arr;
+    }
+    
+</script>
+<style>
+    .separate-span span{
+        display: inline-block;
+    }
+</style>
+
+
+</body>
+</html>
